@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Order
+{% endblock title %}
+
+
+
+{% block body_block %}
+
+
+<table class="table table-bordered">
+    <thead>
+        <th scope="col">#</th>
+        <th scope="col">Order_id</th>
+        <th scope="col">Products</th>
+        <th scope="col">Total Amount</th>
+        <th scope="col">Status</th>
+    </thead>
+    <tbody>
+        {% for order in order_items %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{order.order_id}}</td>
+            <td>
+                {% for user_order in order.order_items.all %}
+                <p>{{user_order.item.product_name}}</p>
+                {% endfor %}
+            </td>
+            <td>{{order.get_totals}}</td>
+            <td><span class="badge text-bg-primary">{{order.status}}</span></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock body_block %}

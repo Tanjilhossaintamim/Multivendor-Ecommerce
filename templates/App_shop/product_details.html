@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+{{product.product_name}}
+{% endblock title %}
+
+
+{% block body_block %}
+
+<div class="row">
+    <div class="col-5">
+        <img src="{{product.product_image.url}}" alt="" width="100%">
+    </div>
+    <div class="col-7">
+        <h3>{{product.product_name}}</h3>
+        <h2 class="text-warning">Tk {{product.price}}</h2>
+        <h4>Product Description</h4>
+        <p>{{product.product_description|linebreaks}}</p>
+        <a href="{% url 'App_order:add_to_cart' pk=product.pk%}" class="btn btn-outline-primary">ADD TO CART <i class="fa-solid fa-cart-shopping"></i></a>
+
+
+
+        <div class="mt-4">
+            <h4>Contact Sellar</h4>
+            <h5>Sellar name : {{product.sellar.user.user_profile.fullname}}</h5>
+            <h6>Phone: {{ product.sellar.user.user_profile.phone }}</h6>
+        </div>
+    </div>
+</div>
+
+{% endblock body_block %}

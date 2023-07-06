@@ -1,0 +1,125 @@
+{% load static %}
+{% load cart_tag %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+
+        {% block title %}
+
+        {% endblock title %}
+
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-secondary position-sticky top-0">
+        <div class="container ">
+            <a class="navbar-brand" href="{% url 'App_shop:home'%}">Ecommerce</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'App_shop:home'%}">Home</a>
+                    </li>
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'App_order:cart' %}" id="nav">Cart <i
+                                class="fa-solid fa-cart-shopping"></i> <span
+                                class="badge text-bg-primary">{{request.user|cart_total}}</span></a>
+                    </li>
+                    <li class="nav-item dropdown">
+
+                        {% if user.user_profile.fullname %}
+
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            {{user.user_profile.fullname}}
+                        </a>
+                        {% else %}
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            {{user.email}}
+                        </a>
+                        {% endif %}
+
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'App_login:profile' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_payment:order' %}">Order</a></li>
+
+                            {% if user.sellar_profile %}
+                            <li><a class="dropdown-item" href="{% url 'App_shop:sellar_product' %}">View Your
+                                    Product</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_shop:add_product' %}">Add Product</a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{% url 'App_login:logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+
+
+
+
+                    {% if user.sellar_profile %}
+
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'App_login:sellar' %}">Become a Sellar ?</a>
+                    </li>
+                    {% endif %}
+
+                    {% else %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'App_login:login' %}">Login / SignUp</a>
+                    </li>
+
+                    {% endif %}
+
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container pt-5">
+        <div class="messages container mt-2">
+
+            {% if messages %}
+
+            {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} role="alert" id="message">
+                {{message}}
+
+            </div>
+
+            {% endfor %}
+
+            {% endif %}
+
+            {% block body_block %}
+
+            {% endblock body_block %}
+        </div>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/6da7043c56.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

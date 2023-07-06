@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Home
+{% endblock title %}
+
+
+{% block body_block %}
+<div class="row">
+    {% for product in all_products %}
+    <div class="product">
+
+
+        <a href="{% url 'App_shop:product_details' pk=product.pk %}"><img src="{{product.product_image.url}}" alt=""
+                width="100%" height="300px"></a>
+
+
+
+        <a href="{% url 'App_shop:product_details' pk=product.pk %}" class="text-decoration-none mt-2">
+            <h6>{{product.product_name}}</h6>
+        </a>
+        <div class="d-flex justify-content-between">
+
+            <p>&#2547; <strong>{{product.price}}</strong> <strike>{{product.old_price}}</strike></p>
+
+            <a href="{% url 'App_order:add_to_cart' pk=product.pk%}" title="add to cart"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+
+
+    </div>
+
+
+
+
+
+    {% endfor %}
+</div>
+
+{% endblock body_block %}

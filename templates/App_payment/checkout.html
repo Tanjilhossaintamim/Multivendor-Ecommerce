@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+Payment
+{% endblock title %}
+
+
+
+{% block body_block %}
+<h1> Shiping Address > Checkout</h1>
+<div class="row">
+    <div class="col-8">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{address_form|crispy}}
+            <input type="submit" value="Save" class="btn btn-success">
+        </form>
+
+    </div>
+    <div class="col-4">
+        <div class="card" style="width: 20rem;">
+            <ul class="list-group list-group-flush">
+
+                {% for order in order_items %}
+
+                <li class="list-group-item">{{order}}</li>
+                {% endfor %}
+
+
+            </ul>
+            <div class="card-footer">
+                <h6>SubTotal : {{order_total}}</h6>
+            </div>
+        </div>
+
+        {% if user.user_billing_address.is_fully_filled %}
+        <a href="{% url 'App_payment:pay' %}" class="btn btn-warning mt-4">Make Payment</a>
+        {% else %}
+        <p class="alert alert-warning mt-3">Fill Up All Information for make payment</p>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock body_block %}

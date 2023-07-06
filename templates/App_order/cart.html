@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}
+Cart
+{% endblock title %}
+
+{% block body_block %}
+<h1>Cart</h1>
+
+<table class="table table-hover">
+    <thead>
+        <th>#</th>
+        <th>Product Image</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
+        <th>Remove</th>
+    </thead>
+    <tbody>
+
+        {% for cart in user_cart %}
+
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>
+                <img src="{{cart.item.product_image.url}}" alt="" width="40px" height="40px">
+            </td>
+            <td>{{cart.item.product_name}}</td>
+            <td>&#2547; {{cart.item.price}}</td>
+            <td>
+                <a href="{% url 'App_order:decrease' pk=cart.item.pk%}" class="text-decoration-none">–</a>
+                {{cart.quantity}}
+                <a href="{% url 'App_order:increase' pk=cart.item.pk %}" class="text-decoration-none">+</a>
+            </td>
+            <td>&#2547; {{cart.get_total}}</td>
+            <td><a href="{% url 'App_order:remove_item' pk=cart.item.pk%}" class="btn btn-danger">Remove</a></td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3">
+                <a href="{% url 'App_payment:checkout'%}" class="btn btn-success">Proceed To Checkout</a>
+                <a href="{% url 'App_shop:home' %}" class="btn btn-warning">Continue Shoping</a>
+            </td>
+            <td colspan="2"><strong>Total Price</strong> </td>
+            <td colspan="2"><strong>&#2547; {{order.get_totals}} /=</strong> </td>
+        </tr>
+
+    </tbody>
+</table>
+
+
+
+
+{% if not allredy_coupon %}
+
+<form action="{% url 'App_order:cart'%}" method="post">
+
+    {% if coupon %}
+
+    <p class="text-success"><b>'{{coupon.coupon_code}}'</b> use this coupon and get {{coupon.discount}}% discount !
+    </p>
+    {% endif %}
+
+    {% csrf_token %}
+    <input type="text" name="coupon" placeholder="Enter Coupon " class="form-control" style="width: 300px;"
+        required><br>
+    <input type="submit" value="Apply" class="btn btn-primary">
+</form>
+{% endif %}
+
+
+
+{% endblock body_block %}
