@@ -90,6 +90,11 @@ def create_sellar(request):
 
 @login_required
 def password_change(request):
-    form = PasswordChangeForm(instance=request.user)
-
+    form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user,request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Password Changed Successfully !')
+            return HttpResponseRedirect(reverse('App_shop:home'))
     return render(request, 'App_login/password_change.html', context={'form': form})

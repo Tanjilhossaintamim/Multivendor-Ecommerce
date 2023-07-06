@@ -28,7 +28,8 @@ Order
                 <p>{{user_order.item.product_name}}</p>
                 {% endfor %}
             </td>
-            <td>{{order.get_totals}}</td>
+            <td>&#2547; {{order.get_totals}}</td>
+            
             <td><span class="badge text-bg-primary">{{order.status}}</span></td>
         </tr>
         {% endfor %}
