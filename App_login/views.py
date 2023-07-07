@@ -90,7 +90,7 @@ def create_sellar(request):
 
 @login_required
 def password_change(request):
-    form = PasswordChangeForm(request.user)
+    form = PasswordChangeForm(user=request.user)
     if request.method == 'POST':
         form = PasswordChangeForm(request.user,request.POST)
         if form.is_valid():
